@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class UserCar {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email")
