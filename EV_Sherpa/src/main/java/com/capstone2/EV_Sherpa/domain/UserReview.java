@@ -6,19 +6,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter
 @Setter
-@Table(name = "users_preferences")
-public class UserPreference {
+@Getter
+@Table(name = "users_reviews")
+public class UserReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_review_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "preference_id")
-    private Preference preference;
+    @ManyToOne
+    @JoinColumn(name = "review_id")
+    private Review reviewId;
 }
