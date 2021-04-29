@@ -21,7 +21,11 @@ public class UserService {
 
     @Transactional
     public Long join(User user){
-        validateDuplicateUser(user);
+        int check = 0;
+        check = validateDuplicateUser(user);
+        if(check == -1){
+            return (long)-1;
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return user.getId();
@@ -31,19 +35,20 @@ public class UserService {
     public User authenticate(String email, String password){
         List<User> findUsers = userRepository.findByEmail(email);
         if(findUsers.isEmpty()){
-            throw new UserEmptyException();
+            return null;
         }
         if(!passwordEncoder.matches(password, findUsers.get(0).getPassword())){
-            throw new PasswordWrongException();
+            return null;
         }
         return findUsers.get(0);
     }
 
-    private void validateDuplicateUser(User user){
+    private int validateDuplicateUser(User user){
         List<User> findUsers = userRepository.findByEmail(user.getEmail());
         if(!findUsers.isEmpty()){
-            throw new UserExistException();
+            return -1;
         }
+        return 0;
     }
 
     public User findOneByEmail(String email){return userRepository.findOneByEmail(email);}
