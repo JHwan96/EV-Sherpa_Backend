@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    @PostMapping("/account/signup")             //회원가입
+    @PostMapping("account/signup")             //회원가입
     public CreateUserResponse signup( @Valid CreateUserRequest request){
         User user = new User();
         user.setEmail(request.getEmail());
@@ -41,21 +41,24 @@ public class UserController {
     }
 
     @PutMapping("/account/edit/password")              //비밀번호 변경
-    public CreateUserResponse editPassword(@RequestBody @Valid CreateUserRequest request){
-        User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updatePassword(findUser.getPassword(), findUser.getId());
-        return new CreateUserResponse(true);
+    public ChangePasswordResponse editPassword(@Valid ChangePasswordRequest request){   //@RequestBpdy
+        User findUser = userService.authenticate(request.getEmail(), request.getPassword());
+        if(findUser == null) {
+            return new ChangePasswordResponse(false);
+        }
+        userService.updatePassword(request.getNewPassword(), findUser.getId());
+        return new ChangePasswordResponse(true);
     }
 
-    @GetMapping("/user/profile")                //프로필 가져오는 함수
-    public UserProfileResponse searchProfile(@RequestBody @Valid UserProfileRequest request) {
+    @PostMapping("/user/profile")                //프로필 가져오는 함수
+    public UserProfileResponse searchProfile(@Valid UserProfileRequest request) {
         User findUser = userService.findOneByEmail(request.getEmail());
-        return new UserProfileResponse(findUser.getNickname(), findUser.getCarName(),
+        return new UserProfileResponse(true, findUser.getNickname(), findUser.getCarName(),
                 findUser.getAge(), findUser.getHomeAddr(), findUser.getWorkplaceAddr());
     }
 
-    @PutMapping("/user/edit/profile")           //프로필 수정하고
-    public EditProfileResponse editProfile(@RequestBody @Valid EditProfileRequest request){
+    @PutMapping("/user/profile/edit")           //프로필 수정하고
+    public EditProfileResponse editProfile(@Valid EditProfileRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
         userService.updateUserProfile(findUser.getEmail(), request.getNickname(),
                 request.getCarName(), request.getAge(), request.getHomeAddr(),
@@ -82,12 +85,36 @@ public class UserController {
 
     @Data
     @AllArgsConstructor
+    static class ChangePasswordResponse{
+        private Boolean success;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class ChangePasswordRequest{
+        @NotEmpty
+        private String email;
+        @NotEmpty
+        private String password;
+        @NotEmpty
+        private String newPassword;
+    }
+
+    @Data
+    @AllArgsConstructor
     static class UserProfileResponse{
+        private Boolean success;
         private String nickname;
         private String carName;
         private Long age;
         private String homeAddr;
         private String workplaceAddr;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UserProfileRequest{
+        private String email;
     }
 
     @Data
@@ -103,7 +130,6 @@ public class UserController {
     @Data
     @AllArgsConstructor
     static class EditProfileRequest{
-
         private String email;
         private String nickname;
         private String carName;
@@ -112,12 +138,6 @@ public class UserController {
         private String workplaceAddr;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class UserProfileRequest{
-        @NotEmpty
-        private String email;
-    }
 
     @Data
     static class SearchUserRequest {
