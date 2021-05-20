@@ -39,7 +39,7 @@ public class ApiInformation {
     private String useTime;           //이용가능시간
 
     @Column(name = "busiId")
-    private String businessId;           //기관 아이디
+    private String busiId;           //기관 아이디
 
     @Column(name = "busiNm")
     private String busiNm;           //운영기관명
@@ -65,4 +65,15 @@ public class ApiInformation {
     @Column(name = "note")
     private String note;           //충전소 안내
 
+    @Column(name = "limitYn")
+    private String limitYn;
+
+    @Column(name = "limitDetail")
+    private String limitDetail;
+
+    @Column(name = "delYn")
+    private String delYn;
+
+    @Column(name = "delDetail")
+    private String delDetail;
 }
