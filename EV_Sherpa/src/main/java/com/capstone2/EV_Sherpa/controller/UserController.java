@@ -18,11 +18,12 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    @PostMapping("account/signup")             //회원가입
+    @PostMapping("/account/signup")             //회원가입
     public CreateUserResponse signup( @Valid CreateUserRequest request){
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
+        user.setNickname(request.getNickname());
         Long id = userService.join(user);
         if(id == -1){
             return new CreateUserResponse(false);
@@ -52,8 +53,11 @@ public class UserController {
 
     @PostMapping("/user/profile")                //프로필 가져오는 함수
     public UserProfileResponse searchProfile(@Valid UserProfileRequest request) {
-        User findUser = userService.findOneByEmail(request.getEmail());
-        return new UserProfileResponse(true, findUser.getNickname(), findUser.getCarName(),
+        User findUser = userService.authenticate(request.getEmail(), request.getPassword());
+        if(findUser == null){
+            return new UserProfileResponse(false, null, null,null,null,null,null);
+        }
+        return new UserProfileResponse(true, findUser.getEmail(), findUser.getNickname(), findUser.getCarName(),
                 findUser.getAge(), findUser.getHomeAddr(), findUser.getWorkplaceAddr());
     }
 
@@ -63,7 +67,7 @@ public class UserController {
         userService.updateUserProfile(findUser.getEmail(), request.getNickname(),
                 request.getCarName(), request.getAge(), request.getHomeAddr(),
                 request.getWorkplaceAddr());
-        return new EditProfileResponse(findUser.getNickname(), findUser.getCarName(),
+        return new EditProfileResponse(true, findUser.getNickname(), findUser.getCarName(),
                 findUser.getAge(), findUser.getHomeAddr(), findUser.getWorkplaceAddr());
     }
 
@@ -81,6 +85,8 @@ public class UserController {
         private String email;
         @NotEmpty
         private String password;
+        @NotEmpty
+        private String nickname;
     }
 
     @Data
@@ -104,6 +110,7 @@ public class UserController {
     @AllArgsConstructor
     static class UserProfileResponse{
         private Boolean success;
+        private String email;
         private String nickname;
         private String carName;
         private Long age;
@@ -115,11 +122,13 @@ public class UserController {
     @AllArgsConstructor
     static class UserProfileRequest{
         private String email;
+        private String password;
     }
 
     @Data
     @AllArgsConstructor
     static class EditProfileResponse{
+        private Boolean success;
         private String nickname;
         private String carName;
         private Long age;
