@@ -1,7 +1,6 @@
 package com.capstone2.EV_Sherpa.repository;
 
 import com.capstone2.EV_Sherpa.domain.ApiInformation;
-import com.capstone2.EV_Sherpa.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

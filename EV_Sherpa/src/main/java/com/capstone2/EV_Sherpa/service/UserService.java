@@ -66,13 +66,48 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserProfile(String email, String nickname, String carName, Long age, String homeAddr, String workplaceAddr){
+    public void updateUserProfile(String email, String nickname, String carName, String age, String homeAddr, String workplaceAddr){
         User user = userRepository.findOneByEmail(email);       //프로필 수정용
         user.setNickname(nickname);
         user.setCarName(carName);
         user.setAge(age);
         user.setHomeAddr(homeAddr);
         user.setWorkplaceAddr(workplaceAddr);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateHomeAddr(String email, String homeAddr){
+        User user = userRepository.findOneByEmail(email);       //집주소 수정용
+        user.setHomeAddr(homeAddr);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateWorkplaceAddr(String email, String workplaceAddr){
+        User user = userRepository.findOneByEmail(email);       //직장주소 수정용
+        user.setWorkplaceAddr(workplaceAddr);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateNickname(String email, String nickname){
+        User user = userRepository.findOneByEmail(email);       //닉네임 수정용
+        user.setNickname(nickname);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateCarName(String email, String carName){
+        User user = userRepository.findOneByEmail(email);       //자기차 수정용
+        user.setCarName(carName);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateAge(String email, String age){
+        User user = userRepository.findOneByEmail(email);       //나이 수정용
+        user.setAge(age);
         userRepository.save(user);
     }
 

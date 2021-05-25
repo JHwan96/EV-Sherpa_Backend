@@ -1,16 +1,20 @@
 package com.capstone2.EV_Sherpa.service;
 
 import com.capstone2.EV_Sherpa.domain.ApiInformation;
+import com.capstone2.EV_Sherpa.repository.Api2Repository;
 import com.capstone2.EV_Sherpa.repository.ApiRepository;
 import com.capstone2.EV_Sherpa.utils.HtmlUtil;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -18,20 +22,16 @@ import java.net.URLEncoder;
 @RequiredArgsConstructor
 public class ApiService {
     private final ApiRepository apiRepository;
+    private final Api2Repository api2Repository;
 
     @Transactional
     public String xmlToDb() throws Exception{
-        ApiInformation apiInformation = new ApiInformation();
+
         HtmlUtil htmlUtil = new HtmlUtil();
         int itemSize;
         String test = new String();
-//            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/EvCharger/getChargerStatus"); /*URL*/
-//            urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + ""); /*Service Key*/
-//            urlBuilder.append("&" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8")); /*공공데이터포털에서 받은 인증키*/
-//            urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
-//            urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수 (최소 10, 최대 9999)*/
-//            urlBuilder.append("&" + URLEncoder.encode("period", "UTF-8") + "=" + URLEncoder.encode("5", "UTF-8")); /*상태갱신 조회 범위(분) (기본값 5, 최소 1, 최대 10)*/
-//            urlBuilder.append("&" + URLEncoder.encode("zcode", "UTF-8") + "=" + URLEncoder.encode("11", "UTF-8")); /*시도 코드 (행정구역코드 앞 2자리)*/
+        List<ApiInformation> apiInformationList;
+
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/EvCharger/getChargerInfo"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "WJo08u7NjS7h%2FNNZuvLvDZssjBLtqhGdpO939Mzlh9TERxC9Q7k%2BKrxh0MJfafGGlS8NrJLhDFxcy6kVcp5upA%3D%3D"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + URLEncoder.encode("WJo08u7NjS7h/NNZuvLvDZssjBLtqhGdpO939Mzlh9TERxC9Q7k+Krxh0MJfafGGlS8NrJLhDFxcy6kVcp5upA==", "UTF-8")); /*공공데이터포털에서 받은 인증키*/
@@ -39,7 +39,7 @@ public class ApiService {
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수 (최소 10, 최대 9999)*/
         urlBuilder.append("&" + URLEncoder.encode("zcode","UTF-8") + "=" + URLEncoder.encode("11", "UTF-8")); /*시도 코드 (행정구역코드 앞 2자리)*/
 
-
+        apiInformationList = new ArrayList<>();
         String jsonData = new HtmlUtil().HtmlParser(urlBuilder.toString());
        try {
             JSONObject jObj;
@@ -55,6 +55,7 @@ public class ApiService {
             itemSize = item.size();
 
             for(int i=0; i < itemSize; i++){        //TODO: 배열리스트에 받아서 saveAll로 저장해보기
+                ApiInformation apiInformation = new ApiInformation();
                 jObj=(JSONObject)item.get(i);
                 System.out.println(jObj.toString());
                 apiInformation.setStatId(jObj.get("statId").toString());
@@ -79,9 +80,9 @@ public class ApiService {
                 apiInformation.setDelYn(jObj.get("delYn").toString());
                 apiInformation.setDelDetail(jObj.get("delDetail").toString());
 
-                apiRepository.save(apiInformation);
+                apiInformationList.add(apiInformation);
             }
-
+           api2Repository.saveAll(apiInformationList);
         }
         catch(Exception e){
             e.printStackTrace();

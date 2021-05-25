@@ -30,7 +30,7 @@ public class User {
     private String carName;
 
     @Column(name = "age")
-    private Long age;
+    private String age;
 
     @Column(name = "homeAddr")
     private String homeAddr;
