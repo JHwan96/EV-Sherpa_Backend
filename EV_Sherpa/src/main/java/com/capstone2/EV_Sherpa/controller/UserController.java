@@ -1,5 +1,6 @@
 package com.capstone2.EV_Sherpa.controller;
 
+import com.capstone2.EV_Sherpa.domain.Preference;
 import com.capstone2.EV_Sherpa.domain.User;
 import com.capstone2.EV_Sherpa.service.UserService;
 import com.capstone2.EV_Sherpa.utils.JwtUtil;
@@ -25,6 +26,8 @@ public class UserController {
         user.setPassword(request.getPassword());
         user.setNickname(request.getNickname());
         Long id = userService.join(user);
+
+
         if(id == -1){
             return new CreateUserResponse(false);
         }
@@ -95,51 +98,62 @@ public class UserController {
     @PutMapping("/account/update/work_address")     //직장주소 변경2
     public EditWorkplaceAddrResponse editWorkplaceAddr2(@Valid EditWorkplaceAddrRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateHomeAddr(findUser.getEmail(), request.getWorkplaceAddr());
+        userService.updateWorkplaceAddr(findUser.getEmail(), request.getWorkplaceAddr());
         return new EditWorkplaceAddrResponse(true);
     }
 
     @PostMapping("/account/update/nickname")    //닉네임 변경1
     public EditNicknameResponse editNickname(@Valid EditNicknameRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateWorkplaceAddr(findUser.getEmail(), request.getNickname());
+        userService.updateNickname(findUser.getEmail(), request.getNickname());
         return new EditNicknameResponse(true);
     }
 
     @PutMapping("/account/update/nickname")     //닉네임 변경2
     public EditNicknameResponse editNickname2(@Valid EditNicknameRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateHomeAddr(findUser.getEmail(), request.getNickname());
+        userService.updateNickname(findUser.getEmail(), request.getNickname());
         return new EditNicknameResponse(true);
     }
 
     @PostMapping("/account/update/car_info")    //자기차 정보 변경1
     public EditCarNameResponse editCarName(@Valid EditCarNameRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateWorkplaceAddr(findUser.getEmail(), request.getCarName());
+        userService.updateCarName(findUser.getEmail(), request.getCarName());
         return new EditCarNameResponse(true);
     }
 
     @PutMapping("/account/update/car_info")     //자기차 정보 변경2
     public EditCarNameResponse editCarName2(@Valid EditCarNameRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateHomeAddr(findUser.getEmail(), request.getCarName());
+        userService.updateCarName(findUser.getEmail(), request.getCarName());
         return new EditCarNameResponse(true);
     }
 
-    @PostMapping("/account/update/age")    //자기차 정보 변경1
+    @PostMapping("/account/update/age")    //나이 정보 변경1
     public EditAgeResponse editAge(@Valid EditAgeRequest request){
         User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateWorkplaceAddr(findUser.getEmail(), request.getAge());
+        userService.updateAge(findUser.getEmail(), request.getAge());
         return new EditAgeResponse(true);
     }
 
-    @PutMapping("/account/update/age")     //자기차 정보 변경2
+    @PutMapping("/account/update/age")     //나이 정보 변경2
     public EditAgeResponse editAge2(@Valid EditAgeRequest request){
-        User findUser = userService.findOneByEmail(request.getEmail());
-        userService.updateHomeAddr(findUser.getEmail(), request.getAge());
-        return new EditAgeResponse(true);
+            User findUser = userService.findOneByEmail(request.getEmail());
+            userService.updateAge(findUser.getEmail(), request.getAge());
+            return new EditAgeResponse(true);
+        }
+
+
+    @PostMapping("/account/update/preference")
+    public EditPreferenceResponse editPreference(@Valid EditPreferenceRequest request){
+            User findUser = userService.findOneByEmail(request.getEmail());
+            userService.updatePreference(findUser.getEmail(), request.getDistance(),
+                    request.getChargerType(),request.getBatteryType(), request.getFastCharge(),
+                    request.getRemainingCharger(), request.getBusinessName());
+            return new EditPreferenceResponse(true);  
     }
+
 
     @Data
     @AllArgsConstructor
@@ -297,6 +311,24 @@ public class UserController {
         private String workplaceAddr;
         private String carName;
         private String age;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class EditPreferenceResponse{
+        private Boolean success;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class EditPreferenceRequest{
+        private String email;
+        private Long distance;
+        private Long chargerType;
+        private String batteryType;
+        private Boolean fastCharge;
+        private Long remainingCharger;
+        private String businessName;
     }
 
 }

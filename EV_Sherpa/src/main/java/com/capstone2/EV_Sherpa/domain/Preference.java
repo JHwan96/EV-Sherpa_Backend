@@ -28,5 +28,9 @@ public class Preference {
     private Boolean fastCharge;
 
     @Column(name = "remainingCharger")
-    private Boolean remainingCharger;
+    private Long remainingCharger;
+
+    @Column(name = "businessName")
+    private String businessName;
+
 }

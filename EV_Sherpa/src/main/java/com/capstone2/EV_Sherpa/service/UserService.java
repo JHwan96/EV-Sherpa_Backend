@@ -1,6 +1,8 @@
 package com.capstone2.EV_Sherpa.service;
 
+import com.capstone2.EV_Sherpa.domain.Preference;
 import com.capstone2.EV_Sherpa.domain.User;
+import com.capstone2.EV_Sherpa.domain.UserPreference;
 import com.capstone2.EV_Sherpa.exception.PasswordWrongException;
 import com.capstone2.EV_Sherpa.exception.UserEmptyException;
 import com.capstone2.EV_Sherpa.exception.UserExistException;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.prefs.Preferences;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,13 +24,21 @@ public class UserService {
 
     @Transactional
     public Long join(User user){
+
         int check = 0;
         check = validateDuplicateUser(user);
         if(check == -1){
             return (long)-1;
         }
+        Preference preference = new Preference();
+        UserPreference userPreference = new UserPreference();
+        userPreference.setPreference(preference);
+        userPreference.setUser(user);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        userRepository.save(preference);
+        userRepository.save(userPreference);
         return user.getId();
     }
 
@@ -109,6 +120,21 @@ public class UserService {
         User user = userRepository.findOneByEmail(email);       //나이 수정용
         user.setAge(age);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void updatePreference(String email, Long distance, Long chargerType, String batterytype,
+                                 Boolean FastCharge, Long remainingCharger, String businessName){
+        User user = userRepository.findOneByEmail(email);
+        UserPreference userPreference= userRepository.findOneByUserId(user.getId());
+        Preference preference = userRepository.findOneByPreferenceId(userPreference.getPreference().getId());
+        preference.setDistance(distance);
+        preference.setChargerType(chargerType);
+        preference.setBatteryType(batterytype);
+        preference.setFastCharge(FastCharge);
+        preference.setRemainingCharger(remainingCharger);
+        preference.setBusinessName(businessName);
+        userRepository.save(preference);
     }
 
 }
