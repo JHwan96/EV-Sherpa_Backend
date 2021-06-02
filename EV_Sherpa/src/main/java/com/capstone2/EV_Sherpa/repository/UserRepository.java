@@ -40,14 +40,15 @@ public class UserRepository {
     }
 
     public UserPreference findOneByUserId(Long user_id){
-        return em.createQuery("select u from UserPreference as u where u.user_id= :user_id",UserPreference.class)
+        return em.createQuery("select u from UserPreference as u join fetch u.user_id a where a.id = :user_id",UserPreference.class)
                 .setParameter("user_id", user_id)
                 .getSingleResult();
     }
 
+
     public Preference findOneByPreferenceId(Long preference_id){
         return em.createQuery("select u from Preference as u where u.id= :preference_id",Preference.class)
-                .setParameter("id", preference_id)
+                .setParameter("preference_id", preference_id)
                 .getSingleResult();
     }
 }

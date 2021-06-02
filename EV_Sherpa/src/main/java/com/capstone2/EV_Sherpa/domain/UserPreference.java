@@ -16,9 +16,9 @@ public class UserPreference {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user_id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preference_id")
-    private Preference preference;
+    private Preference preference_id;
 }

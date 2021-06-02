@@ -32,8 +32,8 @@ public class UserService {
         }
         Preference preference = new Preference();
         UserPreference userPreference = new UserPreference();
-        userPreference.setPreference(preference);
-        userPreference.setUser(user);
+        userPreference.setPreference_id(preference);
+        userPreference.setUser_id(user);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -127,7 +127,7 @@ public class UserService {
                                  Boolean FastCharge, Long remainingCharger, String businessName){
         User user = userRepository.findOneByEmail(email);
         UserPreference userPreference= userRepository.findOneByUserId(user.getId());
-        Preference preference = userRepository.findOneByPreferenceId(userPreference.getPreference().getId());
+        Preference preference = userRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         preference.setDistance(distance);
         preference.setChargerType(chargerType);
         preference.setBatteryType(batterytype);
