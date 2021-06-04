@@ -20,4 +20,11 @@ public class ApiController {
         result = apiService.xmlToDb();   // new String("hello");
         return result;//result+"</xmp>";
     }
+
+    @GetMapping("/statusApi")
+    public String callApiStatus() throws Exception{
+        String result;
+        result = apiService.statusXmlToString();
+        return result;
+    }
 }

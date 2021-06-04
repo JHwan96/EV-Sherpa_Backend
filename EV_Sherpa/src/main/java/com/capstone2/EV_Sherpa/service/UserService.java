@@ -8,6 +8,7 @@ import com.capstone2.EV_Sherpa.exception.UserEmptyException;
 import com.capstone2.EV_Sherpa.exception.UserExistException;
 import com.capstone2.EV_Sherpa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.prefs.Preferences;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public Long checkDuplicate(User user){
+        int check = 0;
+        check = validateDuplicateUser(user);
+        if(check == -1){
+            return (long)-1;
+        }
+        else{
+            return (long)1;
+        }
+    }
 
     @Transactional
     public Long join(User user){
@@ -64,6 +78,8 @@ public class UserService {
 
     public User findOneByEmail (String email){
         List<User> findUsers = userRepository.findByEmail(email);
+        log.info("email");
+        log.info(email);
         return findUsers.get(0);
     }
 

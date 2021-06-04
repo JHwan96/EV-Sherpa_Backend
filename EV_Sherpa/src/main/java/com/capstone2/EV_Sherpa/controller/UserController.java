@@ -7,12 +7,13 @@ import com.capstone2.EV_Sherpa.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.web.bind.annotation.*;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -90,6 +91,7 @@ public class UserController {
 
     @PostMapping("/account/update/work_address")    //직장주소 변경1
     public EditWorkplaceAddrResponse editWorkplaceAddr(@Valid EditWorkplaceAddrRequest request){
+        log.info(request.workplaceAddr);
         User findUser = userService.findOneByEmail(request.getEmail());
         userService.updateWorkplaceAddr(findUser.getEmail(), request.getWorkplaceAddr());
         return new EditWorkplaceAddrResponse(true);
@@ -152,6 +154,44 @@ public class UserController {
                     request.getChargerType(),request.getBatteryType(), request.getFastCharge(),
                     request.getRemainingCharger(), request.getBusinessName());
             return new EditPreferenceResponse(true);  
+    }
+
+    @PostMapping("/account/social_login")
+    public SocialLoginResponse socialLogin(@Valid SocialLoginRequest request){
+            User user = new User();
+            user.setEmail(request.getEmail());
+            user.setNickname(request.getNickname());
+            user.setPassword(request.getPassword());
+            Long id = userService.checkDuplicate(user);
+            if(id == -1){
+                User findUser = userService.findOneByEmail(request.getEmail());
+                return new SocialLoginResponse(true, findUser.getEmail(), findUser.getNickname(),
+                        findUser.getHomeAddr(), findUser.getWorkplaceAddr(),findUser.getCarName(),findUser.getAge());
+            }
+            else{
+                Long a = userService.join(user);
+                return new SocialLoginResponse(true, request.getEmail(),request.getNickname(),null,null,null,null);
+            }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class SocialLoginResponse{
+        private Boolean success;
+        private String email;
+        private String nickname;
+        private String homeAddr;
+        private String workplaceAddr;
+        private String carName;
+        private String age;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class SocialLoginRequest{
+        private String email;
+        private String password;
+        private String nickname;
     }
 
 
