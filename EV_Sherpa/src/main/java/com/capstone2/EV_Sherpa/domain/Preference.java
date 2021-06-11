@@ -18,11 +18,8 @@ public class Preference {
     @Column(name = "distance")
     private Long distance;
 
-    @Column(name = "chargerType")
-    private Long chargerType;
-
-    @Column(name = "batteryType")
-    private String batteryType;
+    @Column(name = "chargerType")       //ok
+    private String chargerType;
 
     @Column(name = "fastCharge")
     private Boolean fastCharge;
@@ -30,7 +27,7 @@ public class Preference {
     @Column(name = "remainingCharger")
     private Long remainingCharger;
 
-    @Column(name = "businessName")
+    @Column(name = "businessName")      //ok
     private String businessName;
 
 }

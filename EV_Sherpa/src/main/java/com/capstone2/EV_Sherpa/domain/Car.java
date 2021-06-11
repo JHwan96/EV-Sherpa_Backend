@@ -20,7 +20,4 @@ public class Car {
 
     @Column(name = "chargerType")
     private String chargerType;
-
-    @Column(name = "batteryType")
-    private String batteryType;
 }

@@ -151,7 +151,7 @@ public class UserController {
     public EditPreferenceResponse editPreference(@Valid EditPreferenceRequest request){
             User findUser = userService.findOneByEmail(request.getEmail());
             userService.updatePreference(findUser.getEmail(), request.getDistance(),
-                    request.getChargerType(),request.getBatteryType(), request.getFastCharge(),
+                    request.getChargerType(), request.getFastCharge(),
                     request.getRemainingCharger(), request.getBusinessName());
             return new EditPreferenceResponse(true);  
     }
@@ -364,7 +364,7 @@ public class UserController {
     static class EditPreferenceRequest{
         private String email;
         private Long distance;
-        private Long chargerType;
+        private String chargerType;
         private String batteryType;
         private Boolean fastCharge;
         private Long remainingCharger;

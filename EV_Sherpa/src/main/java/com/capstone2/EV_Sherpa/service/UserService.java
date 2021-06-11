@@ -139,14 +139,13 @@ public class UserService {
     }
 
     @Transactional
-    public void updatePreference(String email, Long distance, Long chargerType, String batterytype,
+    public void updatePreference(String email, Long distance, String chargerType,
                                  Boolean FastCharge, Long remainingCharger, String businessName){
         User user = userRepository.findOneByEmail(email);
         UserPreference userPreference= userRepository.findOneByUserId(user.getId());
         Preference preference = userRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         preference.setDistance(distance);
         preference.setChargerType(chargerType);
-        preference.setBatteryType(batterytype);
         preference.setFastCharge(FastCharge);
         preference.setRemainingCharger(remainingCharger);
         preference.setBusinessName(businessName);
