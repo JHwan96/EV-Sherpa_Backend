@@ -5,6 +5,7 @@ import com.capstone2.EV_Sherpa.service.ApiService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,8 @@ public class ApiController {
 
     @GetMapping("/api")
     public apiInfoResponse callApi() throws Exception {
-        String result;
-
+        //String result;
+        org.json.JSONArray result;
         result = apiService.xmlToDb();
         return new apiInfoResponse(result);
     }
@@ -34,7 +35,8 @@ public class ApiController {
     @Data
     @AllArgsConstructor
     static class apiInfoResponse{
-        private String apiInfo;
+//        private String apiInfo;
+        private org.json.JSONArray apiInfo;
     }
 
     @Data

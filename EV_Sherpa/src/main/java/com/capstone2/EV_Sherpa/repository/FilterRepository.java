@@ -59,6 +59,17 @@ public class FilterRepository {
                 .setParameter("businessName", businessName)
                 .getResultList();
     }
+    public List<ApiInformation> findByDistance(Float latitute, Float longitute, Long distance){
+        return em.createQuery("SELECT u.stat_id FROM ApiInformation as u where " +
+                "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(126.8943311))+sin(radians(37.4685225))*sin(radians(u.lat)))) <= :distance " +
+                "order by (6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(126.8943311))+sin(radians(37.4685225))*sin(radians(u.lat)))) limit 0,5",ApiInformation.class)
+                .setParameter("distance", distance)
+                .setParameter("latitute", latitute)
+                .setParameter("longitute", longitute)
+                .getResultList();
+    }
 
     public List<ApiInformation> findByFastCharge(Boolean fastCharge){
         String a = "02";

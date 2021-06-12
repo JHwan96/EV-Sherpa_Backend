@@ -28,9 +28,15 @@ public class FilterController {
         return new fastChargeResponse(result);
     }
 
-    @PostMapping("/filter/ChargerType")
+    @PostMapping("/filter/chargerType")
     public ChargerTypeResponse prefChargerType(@Valid ChargerTypeRequest request){
         String result = filterService.prefFromChargerType(request.getEmail());
+        return new ChargerTypeResponse(result);
+    }
+
+    @PostMapping("/filter/distance")
+    public ChargerTypeResponse prefDistance(@Valid ChargerTypeRequest request){
+        String result = filterService.prefFromDistance(request.getEmail());
         return new ChargerTypeResponse(result);
     }
 
@@ -67,6 +73,18 @@ public class FilterController {
     @Data
     @AllArgsConstructor
     static class ChargerTypeRequest{
+        private String email;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class DistanceResponse{
+        private String statId;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class DistanceRequest{
         private String email;
     }
 

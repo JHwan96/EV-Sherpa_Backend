@@ -21,39 +21,74 @@ public class FilterService {
 
     @Transactional
     public String prefFromBusinessName(String email){
-        String result = " ";
+        String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByBusinessName(preference.getBusinessName());
         for(int i = 0; i < info.size(); i++) {
-            result += info.get(i).getStatId()+ ",";
+            if(i == info.size() -1) {
+                result += info.get(i).getStatId();
+            }
+            else{
+                result += info.get(i).getStatId() + ",";
+            }
+        }
+        return result;
+    }
+
+    @Transactional
+    public String prefFromDistance(String email){
+        String result = "";
+        User user = filterRepository.findOneByEmail(email);
+        UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
+        Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
+        List<ApiInformation> info = filterRepository.findByDistance((float)0.1,(float)0.1,preference.getDistance());
+        for(int i = 0; i < info.size(); i++) {
+            if(i == info.size() -1) {
+                result += info.get(i).getStatId();
+            }
+            else{
+                result += info.get(i).getStatId() + ",";
+            }
         }
         return result;
     }
 
     @Transactional
     public String prefFromFastCharge(String email){
-        String result = " ";
+        String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByFastCharge(preference.getFastCharge());
         for(int i = 0; i < info.size(); i++) {
-            result += info.get(i).getStatId()+ ",";
+            if(i == info.size() -1) {
+                result += info.get(i).getStatId();
+            }
+            else{
+                result += info.get(i).getStatId() + ",";
+            }
+
         }
         return result;
     }
 
     @Transactional
     public String prefFromChargerType(String email){
-        String result = " ";
+        String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByChargerType(preference.getChargerType());
         for(int i = 0; i < info.size(); i++) {
-            result += info.get(i).getStatId()+ ",";
+            if(i == info.size() -1) {
+                result += info.get(i).getStatId();
+            }
+            else{
+                result += info.get(i).getStatId() + ",";
+            }
+
         }
         return result;
     }

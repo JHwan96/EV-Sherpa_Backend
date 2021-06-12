@@ -54,7 +54,7 @@ public class ApiService {
     }
 
     @Transactional
-    public String xmlToDb() throws Exception{
+    public org.json.JSONArray xmlToDb() throws Exception{
 
         HtmlUtil htmlUtil = new HtmlUtil();
         int itemSize;
@@ -65,7 +65,7 @@ public class ApiService {
         org.json.JSONArray item = new org.json.JSONArray();
 
         for(int i = 0; i < 40; i++) {
-            if (i == 11 || (i > 20 && i < 30) || (i > 30 && i < 40)) {
+            if (i == 11 || i == 26 || i == 27 || i == 28 || i == 29 || i == 31 || i == 36) {
                 String integer = Integer.toString(i);
                 StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/EvCharger/getChargerInfo"); /*URL*/
                 urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "WJo08u7NjS7h%2FNNZuvLvDZssjBLtqhGdpO939Mzlh9TERxC9Q7k%2BKrxh0MJfafGGlS8NrJLhDFxcy6kVcp5upA%3D%3D"); /*Service Key*/
@@ -82,9 +82,10 @@ public class ApiService {
                     org.json.JSONObject parseBody = parseResponse.getJSONObject("body");
                     org.json.JSONObject parseItems = parseBody.getJSONObject("items");
                     item = parseItems.getJSONArray("item");
-                    tempResult = item.toString().replace("]", "");
-                    tempResult = tempResult.replace("[", "");
-                    result = result + tempResult;
+                    tempResult = parseItems.toString();
+                   // tempResult = item.toString().replace("]", "");
+                 //   tempResult = tempResult.replace("[", "");
+                    result = result + tempResult.replace("\"", "");
                     result = result + ",";
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -95,7 +96,7 @@ public class ApiService {
         result = result.substring(0, result.length()-1);
         result = result + "]";
 
-        return result;
+        return item;
     }
 }
 
