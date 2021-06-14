@@ -52,12 +52,23 @@ public class AppRunner implements ApplicationRunner{
 
         itemSize = item.length();
         for(int i=0; i < itemSize; i++){        //TODO: 배열리스트에 받아서 saveAll로 저장해보기
-            ApiInformation apiInformation;
+            ApiInformation apiInformation = new ApiInformation();
             jOb=item.getJSONObject(i);
 
             List<ApiInformation> apiInformation2 = apiRepository.findByStatId(jOb.get("statId").toString());
+            int length = apiInformation2.size();
             if(!apiInformation2.isEmpty()){
-                apiInformation = apiInformation2.get(0);
+                for(int z = 0; z < length; z++) {
+                    if (apiInformation2.get(z).getChgerId().equals(jOb.get("chgerId").toString())) {
+                        apiInformation = apiInformation2.get(z);
+                        break;
+                    }
+                    else {
+                        if(z == length-1)
+                            apiInformation = new ApiInformation();
+                        else continue;
+                    }
+                }
             }
             else {
                 apiInformation = new ApiInformation();

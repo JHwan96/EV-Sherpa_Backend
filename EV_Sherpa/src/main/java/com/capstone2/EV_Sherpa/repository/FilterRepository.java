@@ -9,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.*;
 
 @Slf4j
 @Repository
@@ -47,48 +50,246 @@ public class FilterRepository {
                 .getSingleResult();
     }
 
-    public List<ApiInformation> findByChargerType(String chargerType){
-        return em.createQuery("select u from ApiInformation as u where u.chgerType= :chargerType", ApiInformation.class)
-                .setParameter("chargerType",chargerType)
-                .getResultList();
-    }
-
-    public List<ApiInformation> findByBusinessName(String businessName){
-        log.info(businessName);
-        return em.createQuery("select u from ApiInformation as u where u.busiNm= :businessName",ApiInformation.class)
-                .setParameter("businessName", businessName)
-                .getResultList();
-    }
-    public List<ApiInformation> findByDistance(Float latitute, Float longitute, Long distance){
-        return em.createQuery("SELECT u.stat_id FROM ApiInformation as u where " +
+    public List<ApiInformation> findByChargerType(Float latitude, Float longitude, String chargerType){
+        List<ApiInformation> result = new ArrayList<>();
+        int count = 0;
+        int length;
+        List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
+                "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
                 "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
-                "-radians(126.8943311))+sin(radians(37.4685225))*sin(radians(u.lat)))) <= :distance " +
-                "order by (6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
-                "-radians(126.8943311))+sin(radians(37.4685225))*sin(radians(u.lat)))) limit 0,5",ApiInformation.class)
-                .setParameter("distance", distance)
-                .setParameter("latitute", latitute)
-                .setParameter("longitute", longitute)
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
+                .setParameter("latitude", latitude)
+                .setParameter("longitude", longitude)
                 .getResultList();
+        length = tempResult.size();
+
+        for(int i = 0; i < length; i++) {
+            if(count == 10){
+                break;
+            }
+            if(result.isEmpty()){
+                if(tempResult.get(i).getChgerType().equals(chargerType)) {
+                    result.add(tempResult.get(i));
+                    count++;
+                }
+                else continue;
+            }
+            else {
+                if(result.get(count-1).getStatId().equals(tempResult.get(i).getStatId())) continue;
+                else{
+                    if(tempResult.get(i).getChgerType().equals(chargerType)) {
+                        result.add(tempResult.get(i));
+                        count++;
+                    }
+                    else continue;
+                }
+            }
+        }
+        return result;
     }
 
-    public List<ApiInformation> findByFastCharge(Boolean fastCharge){
+    public List<ApiInformation> findByBusinessName(Float latitude, Float longitude, String businessName){
+        List<ApiInformation> result = new ArrayList<>();
+        int count = 0;
+        int length;
+        List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
+                "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
+                .setParameter("latitude", latitude)
+                .setParameter("longitude", longitude)
+                .getResultList();
+        length = tempResult.size();
+
+        for(int i = 0; i < length; i++) {
+            if(count == 10){
+                break;
+            }
+            if(result.isEmpty()){
+                if(tempResult.get(i).getBusiNm().equals(businessName)) {
+                    result.add(tempResult.get(i));
+                    count++;
+                }
+                else continue;
+            }
+            else {
+                if(result.get(count-1).getStatId().equals(tempResult.get(i).getStatId())) continue;
+                else{
+                    if(tempResult.get(i).getBusiNm().equals(businessName)) {
+                        result.add(tempResult.get(i));
+                        count++;
+                    }
+                    else continue;
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<ApiInformation> findByDistance(Float latitude, Float longitude, Long distance){
+        double Ddistance = (double)distance;
+        List<ApiInformation> result = new ArrayList<>();
+        int count = 0;
+        int length = 0;
+
+        List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
+                "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= :distance order by " +
+                "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
+                .setParameter("distance", Ddistance)
+                .setParameter("latitude", latitude)
+                .setParameter("longitude", longitude)
+                .getResultList();
+        length = tempResult.size();
+
+        for(int i = 0; i < length; i++) {
+            if(count == 10){
+                break;
+            }
+            if(i == 0){
+                result.add(tempResult.get(0));
+                count++;
+            }
+            else {
+                if(result.get(count-1).getStatId().equals(tempResult.get(i).getStatId())) continue;
+                else{
+                    result.add(tempResult.get(i));
+                    count++;
+                }
+            }
+        }
+
+        return result;
+
+
+    }
+
+
+    public List<ApiInformation> findByFastCharge(Float latitude, Float longitude, Boolean fastCharge){
+        List<ApiInformation> result = new ArrayList<>();
+        int count = 0;
+        int length;
         String a = "02";
         String b = "07";
+
+        List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
+                "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
+                .setParameter("latitude", latitude)
+                .setParameter("longitude", longitude)
+                .getResultList();
+        length = tempResult.size();
+
         if(fastCharge == false) {
-            return em.createQuery("select u from ApiInformation as u where " +
-                    "u.chgerType= :chargeType1 or u.chgerType= :chargeType2", ApiInformation.class)
-                    .setParameter("chargeType1", a)
-                    .setParameter("chargeType2", b)
-                    .getResultList();
+            for(int i = 0; i < length; i++) {
+                if(count == 10){
+                    break;
+                }
+                if(result.isEmpty()){
+                    if(tempResult.get(i).getChgerType().equals(a) || tempResult.get(i).getChgerType().equals(b)) {
+                        result.add(tempResult.get(i));
+                        count++;
+                    }
+                    else continue;
+                }
+                else {
+                    if(result.get(count-1).getStatId().equals(tempResult.get(i).getStatId())) continue;
+                    else{
+                        if(tempResult.get(i).getChgerType().equals(a) || tempResult.get(i).getChgerType().equals(b)) {
+                            result.add(tempResult.get(i));
+                            count++;
+                        }
+                        else continue;
+                    }
+                }
+            }
+
+            return result;
         }
         else {
-            return em.createQuery("select u from ApiInformation as u where " +
-                    "u.chgerType!= :chargeType1 and u.chgerType!= :chargeType2", ApiInformation.class)
-                    .setParameter("chargeType1", a)
-                    .setParameter("chargeType2", b)
-                    .getResultList();
+            for(int i = 0; i < length; i++) {
+                if(count == 10){
+                    break;
+                }
+                if(result.isEmpty()){
+                    if(!tempResult.get(i).getChgerType().equals(a) && !tempResult.get(i).getChgerType().equals(b)) {
+                        result.add(tempResult.get(i));
+                        count++;
+                    }
+                    else continue;
+                }
+                else {
+                    if(result.get(count-1).getStatId().equals(tempResult.get(i).getStatId())) continue;
+                    else{
+                        if(!tempResult.get(i).getChgerType().equals(a) && !tempResult.get(i).getChgerType().equals(b)) {
+                            result.add(tempResult.get(i));
+                            count++;
+                        }
+                        else continue;
+                    }
+                }
+            }
+            return result;
         }
     }
 
 
+    public List<ApiInformation> findByRemainingCharger(Float latitude, Float longitude, Long remainingCharger){
+        List<ApiInformation> result = new ArrayList<>();
+        int count = 0;
+        int chargerCount = 0;
+        int length;
+        List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
+                "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
+                .setParameter("latitude", latitude)
+                .setParameter("longitude", longitude)
+                .getResultList();
+        length = tempResult.size();
+
+        for(int i = 0; i < length; i++) {
+            if(count == 10){
+                break;
+            }
+
+            if(count != 0 && result.get(count-1).equals(tempResult.get(i).getStatId())){
+                continue;           //이미 있는 경우
+            }
+
+            if(remainingCharger == 0 && i == 0){    // 선호 0대 이상
+                result.add(tempResult.get(i));
+                count++;
+                continue;
+            }
+            else if(i == 0){
+                if(tempResult.get(i).getStat() == 2)
+                    chargerCount++;
+            }
+
+
+            if(i != 0 && tempResult.get(i-1).getStatId().equals(tempResult.get(i))){
+                if(chargerCount <= remainingCharger){
+                    result.add(tempResult.get(i));
+                    count++;
+                    continue;
+                }
+                else if(tempResult.get(i).getStat() == 2){
+                    chargerCount++;
+                }
+
+            }
+            else if(i != 0 && !tempResult.get(i-1).getStatId().equals(tempResult.get(i))){
+                chargerCount = 0;
+                continue;
+            }
+        }
+        return result;
+    }
 }

@@ -18,25 +18,25 @@ public class FilterController {
 
     @PostMapping("/filter/businessName")
     public businessNameResponse prefBusinessName(@Valid businessNameRequest request) {
-        String result = filterService.prefFromBusinessName(request.getEmail());
+        String result = filterService.prefFromBusinessName(request.getEmail(), request.getLatitude(), request.getLongitude());
         return new businessNameResponse(result);
     }
 
     @PostMapping("/filter/fastCharge")
     public fastChargeResponse prefFastCharge(@Valid fastChargeRequest request){
-        String result = filterService.prefFromFastCharge(request.getEmail());
+        String result = filterService.prefFromFastCharge(request.getEmail(), request.getLatitude(), request.getLongitude());
         return new fastChargeResponse(result);
     }
 
     @PostMapping("/filter/chargerType")
     public ChargerTypeResponse prefChargerType(@Valid ChargerTypeRequest request){
-        String result = filterService.prefFromChargerType(request.getEmail());
+        String result = filterService.prefFromChargerType(request.getEmail(), request.getLatitude(), request.getLongitude());
         return new ChargerTypeResponse(result);
     }
 
     @PostMapping("/filter/distance")
     public ChargerTypeResponse prefDistance(@Valid ChargerTypeRequest request){
-        String result = filterService.prefFromDistance(request.getEmail());
+        String result = filterService.prefFromDistance(request.getEmail(), request.getLatitude(), request.getLongitude());
         return new ChargerTypeResponse(result);
     }
 
@@ -50,6 +50,8 @@ public class FilterController {
     @AllArgsConstructor
     static class businessNameRequest{
         private String email;
+        private Float latitude;
+        private Float longitude;
     }
 
     @Data
@@ -62,6 +64,8 @@ public class FilterController {
     @AllArgsConstructor
     static class fastChargeRequest{
         private String email;
+        private Float latitude;
+        private Float longitude;
     }
 
     @Data
@@ -74,6 +78,8 @@ public class FilterController {
     @AllArgsConstructor
     static class ChargerTypeRequest{
         private String email;
+        private Float latitude;
+        private Float longitude;
     }
 
     @Data
@@ -86,6 +92,8 @@ public class FilterController {
     @AllArgsConstructor
     static class DistanceRequest{
         private String email;
+        private Float latitude;
+        private Float longitude;
     }
 
 }

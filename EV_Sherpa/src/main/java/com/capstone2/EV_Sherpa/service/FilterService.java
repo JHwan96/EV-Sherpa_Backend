@@ -20,12 +20,12 @@ public class FilterService {
     private final FilterRepository filterRepository;
 
     @Transactional
-    public String prefFromBusinessName(String email){
+    public String prefFromBusinessName(String email, Float latitude, Float longitude){
         String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
-        List<ApiInformation> info = filterRepository.findByBusinessName(preference.getBusinessName());
+        List<ApiInformation> info = filterRepository.findByBusinessName(latitude,longitude, preference.getBusinessName());
         for(int i = 0; i < info.size(); i++) {
             if(i == info.size() -1) {
                 result += info.get(i).getStatId();
@@ -38,12 +38,12 @@ public class FilterService {
     }
 
     @Transactional
-    public String prefFromDistance(String email){
+    public String prefFromDistance(String email, Float latitude, Float longitude){
         String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
-        List<ApiInformation> info = filterRepository.findByDistance((float)0.1,(float)0.1,preference.getDistance());
+        List<ApiInformation> info = filterRepository.findByDistance(latitude,longitude,preference.getDistance());
         for(int i = 0; i < info.size(); i++) {
             if(i == info.size() -1) {
                 result += info.get(i).getStatId();
@@ -56,12 +56,12 @@ public class FilterService {
     }
 
     @Transactional
-    public String prefFromFastCharge(String email){
+    public String prefFromFastCharge(String email, Float latitude, Float longitude){
         String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
-        List<ApiInformation> info = filterRepository.findByFastCharge(preference.getFastCharge());
+        List<ApiInformation> info = filterRepository.findByFastCharge(latitude,longitude,preference.getFastCharge());
         for(int i = 0; i < info.size(); i++) {
             if(i == info.size() -1) {
                 result += info.get(i).getStatId();
@@ -75,12 +75,12 @@ public class FilterService {
     }
 
     @Transactional
-    public String prefFromChargerType(String email){
+    public String prefFromChargerType(String email, Float latitude, Float longitude){
         String result = "";
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
-        List<ApiInformation> info = filterRepository.findByChargerType(preference.getChargerType());
+        List<ApiInformation> info = filterRepository.findByChargerType(latitude,longitude,preference.getChargerType());
         for(int i = 0; i < info.size(); i++) {
             if(i == info.size() -1) {
                 result += info.get(i).getStatId();

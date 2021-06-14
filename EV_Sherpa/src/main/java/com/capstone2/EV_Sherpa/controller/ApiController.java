@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -18,9 +19,9 @@ public class ApiController {
     private final ApiService apiService;
 
     @GetMapping("/api")
+    @ResponseBody
     public apiInfoResponse callApi() throws Exception {
-        //String result;
-        org.json.JSONArray result;
+        String result;
         result = apiService.xmlToDb();
         return new apiInfoResponse(result);
     }
@@ -35,8 +36,7 @@ public class ApiController {
     @Data
     @AllArgsConstructor
     static class apiInfoResponse{
-//        private String apiInfo;
-        private org.json.JSONArray apiInfo;
+        private String apiInfo;
     }
 
     @Data
