@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
     private final ApiService apiService;
 
-    @GetMapping("/api")
+    @PostMapping("/api")
     @ResponseBody
-    public apiInfoResponse callApi() throws Exception {
+    public apiInfoResponse callApi(apiInfoRequest request) throws Exception {
         String result;
-        result = apiService.xmlToDb();
+        result = apiService.xmlToDb(request.getLatitude(), request.getLongitude());
+        String changeResult = new String(result.getBytes("8859_1"),"utf-8");
         return new apiInfoResponse(result);
     }
 
@@ -37,6 +39,13 @@ public class ApiController {
     @AllArgsConstructor
     static class apiInfoResponse{
         private String apiInfo;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class apiInfoRequest{
+        private Float latitude;
+        private Float longitude;
     }
 
     @Data

@@ -43,7 +43,7 @@ public class FilterService {
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
-        List<ApiInformation> info = filterRepository.findByDistance(latitude,longitude,preference.getDistance());
+        List<ApiInformation> info = filterRepository.findByDistance(latitude,longitude,(long)3);
         for(int i = 0; i < info.size(); i++) {
             if(i == info.size() -1) {
                 result += info.get(i).getStatId();

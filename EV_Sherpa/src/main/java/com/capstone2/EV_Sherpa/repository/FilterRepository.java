@@ -56,7 +56,7 @@ public class FilterRepository {
         int length;
         List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
                 "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
-                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 1 order by " +
                 "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
                 "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
                 .setParameter("latitude", latitude)
@@ -95,7 +95,7 @@ public class FilterRepository {
         int length;
         List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
                 "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
-                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 1 order by " +
                 "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
                 "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
                 .setParameter("latitude", latitude)
@@ -177,7 +177,7 @@ public class FilterRepository {
 
         List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
                 "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
-                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 1 order by " +
                 "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
                 "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
                 .setParameter("latitude", latitude)
@@ -246,7 +246,7 @@ public class FilterRepository {
         int length;
         List<ApiInformation> tempResult =  em.createQuery("SELECT u FROM ApiInformation as u where " +
                 "(6371*acos(cos(radians(:latitude))*cos(radians(u.lat))*cos(radians(u.lng)" +
-                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 10 order by " +
+                "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) <= 5 order by " +
                 "(6371*acos(cos(radians(37.4685225))*cos(radians(u.lat))*cos(radians(u.lng)" +
                 "-radians(:longitude))+sin(radians(:latitude))*sin(radians(u.lat)))) asc",ApiInformation.class)
                 .setParameter("latitude", latitude)
