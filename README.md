@@ -8,7 +8,7 @@
 
 ## 1. 제작 기간
 
-  - **기술 스택 : Java11, Spring boot, Spring Data JPA, MYSQL**
+  - **기술 스택 : Java11, Spring Boot, Spring Data JPA, MYSQL**
   - 기간  :  2021. 3. 4 ~ 2021. 6. 23
 
 
