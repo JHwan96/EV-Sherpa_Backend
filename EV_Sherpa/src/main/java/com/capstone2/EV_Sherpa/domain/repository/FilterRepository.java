@@ -1,9 +1,9 @@
-package com.capstone2.EV_Sherpa.repository;
+package com.capstone2.EV_Sherpa.domain.repository;
 
-import com.capstone2.EV_Sherpa.domain.ApiInformation;
-import com.capstone2.EV_Sherpa.domain.Preference;
-import com.capstone2.EV_Sherpa.domain.User;
-import com.capstone2.EV_Sherpa.domain.UserPreference;
+import com.capstone2.EV_Sherpa.domain.entity.ApiInformation;
+import com.capstone2.EV_Sherpa.domain.entity.Preference;
+import com.capstone2.EV_Sherpa.domain.entity.User;
+import com.capstone2.EV_Sherpa.domain.entity.UserPreference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Math.*;
 
 @Slf4j
 @Repository
@@ -49,6 +47,7 @@ public class FilterRepository {
                 .setParameter("preference_id", preference_id)
                 .getSingleResult();
     }
+
 
     public List<ApiInformation> findByChargerType(Float latitude, Float longitude, String chargerType){
         List<ApiInformation> result = new ArrayList<>();
@@ -127,6 +126,7 @@ public class FilterRepository {
         }
         return result;
     }
+
 
     public List<ApiInformation> findByDistance(Float latitude, Float longitude, Long distance){
         double Ddistance = (double)distance;

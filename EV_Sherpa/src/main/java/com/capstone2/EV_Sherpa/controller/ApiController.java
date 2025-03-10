@@ -1,13 +1,9 @@
 package com.capstone2.EV_Sherpa.controller;
 
-import com.capstone2.EV_Sherpa.domain.ApiInformation;
 import com.capstone2.EV_Sherpa.service.ApiService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,5 +49,4 @@ public class ApiController {
     static class statusApiResponse {
         private String statusList;
     }
-
 }

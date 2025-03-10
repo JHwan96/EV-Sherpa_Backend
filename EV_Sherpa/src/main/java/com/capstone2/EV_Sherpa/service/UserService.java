@@ -1,12 +1,9 @@
 package com.capstone2.EV_Sherpa.service;
 
-import com.capstone2.EV_Sherpa.domain.Preference;
-import com.capstone2.EV_Sherpa.domain.User;
-import com.capstone2.EV_Sherpa.domain.UserPreference;
-import com.capstone2.EV_Sherpa.exception.PasswordWrongException;
-import com.capstone2.EV_Sherpa.exception.UserEmptyException;
-import com.capstone2.EV_Sherpa.exception.UserExistException;
-import com.capstone2.EV_Sherpa.repository.UserRepository;
+import com.capstone2.EV_Sherpa.domain.entity.Preference;
+import com.capstone2.EV_Sherpa.domain.entity.User;
+import com.capstone2.EV_Sherpa.domain.entity.UserPreference;
+import com.capstone2.EV_Sherpa.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.prefs.Preferences;
 
 @Slf4j
 @Service

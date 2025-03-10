@@ -1,8 +1,8 @@
-package com.capstone2.EV_Sherpa.repository;
+package com.capstone2.EV_Sherpa.domain.repository;
 
-import com.capstone2.EV_Sherpa.domain.Preference;
-import com.capstone2.EV_Sherpa.domain.User;
-import com.capstone2.EV_Sherpa.domain.UserPreference;
+import com.capstone2.EV_Sherpa.domain.entity.Preference;
+import com.capstone2.EV_Sherpa.domain.entity.User;
+import com.capstone2.EV_Sherpa.domain.entity.UserPreference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

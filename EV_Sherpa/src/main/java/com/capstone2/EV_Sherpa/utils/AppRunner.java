@@ -1,11 +1,10 @@
 package com.capstone2.EV_Sherpa.utils;
 
-import com.capstone2.EV_Sherpa.domain.ApiInformation;
-import com.capstone2.EV_Sherpa.repository.ApiRepository;
+import com.capstone2.EV_Sherpa.domain.entity.ApiInformation;
+import com.capstone2.EV_Sherpa.domain.repository.ApiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;

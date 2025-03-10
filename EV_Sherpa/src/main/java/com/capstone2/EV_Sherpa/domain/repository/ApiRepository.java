@@ -1,6 +1,6 @@
-package com.capstone2.EV_Sherpa.repository;
+package com.capstone2.EV_Sherpa.domain.repository;
 
-import com.capstone2.EV_Sherpa.domain.ApiInformation;
+import com.capstone2.EV_Sherpa.domain.entity.ApiInformation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

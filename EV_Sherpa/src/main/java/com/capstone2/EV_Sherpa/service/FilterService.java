@@ -1,10 +1,10 @@
 package com.capstone2.EV_Sherpa.service;
 
-import com.capstone2.EV_Sherpa.domain.ApiInformation;
-import com.capstone2.EV_Sherpa.domain.Preference;
-import com.capstone2.EV_Sherpa.domain.User;
-import com.capstone2.EV_Sherpa.domain.UserPreference;
-import com.capstone2.EV_Sherpa.repository.FilterRepository;
+import com.capstone2.EV_Sherpa.domain.entity.ApiInformation;
+import com.capstone2.EV_Sherpa.domain.entity.Preference;
+import com.capstone2.EV_Sherpa.domain.entity.User;
+import com.capstone2.EV_Sherpa.domain.entity.UserPreference;
+import com.capstone2.EV_Sherpa.domain.repository.FilterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,12 +22,14 @@ public class FilterService {
     @Transactional
     public String prefFromBusinessName(String email, Float latitude, Float longitude){
         String result = "";
+        int length;
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByBusinessName(latitude,longitude, preference.getBusinessName());
-        for(int i = 0; i < info.size(); i++) {
-            if(i == info.size() -1) {
+        length = info.size();
+        for(int i = 0; i < length; i++) {
+            if(i == length -1) {
                 result += info.get(i).getStatId();
             }
             else{
@@ -40,11 +42,13 @@ public class FilterService {
     @Transactional
     public String prefFromDistance(String email, Float latitude, Float longitude){
         String result = "";
+        int length;
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByDistance(latitude,longitude,(long)3);
-        for(int i = 0; i < info.size(); i++) {
+        length = info.size();
+        for(int i = 0; i < length; i++) {
             if(i == info.size() -1) {
                 result += info.get(i).getStatId();
             }
@@ -58,12 +62,14 @@ public class FilterService {
     @Transactional
     public String prefFromFastCharge(String email, Float latitude, Float longitude){
         String result = "";
+        int length;
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByFastCharge(latitude,longitude,preference.getFastCharge());
-        for(int i = 0; i < info.size(); i++) {
-            if(i == info.size() -1) {
+        length = info.size();
+        for(int i = 0; i < length; i++) {
+            if(i == length -1) {
                 result += info.get(i).getStatId();
             }
             else{
@@ -77,12 +83,14 @@ public class FilterService {
     @Transactional
     public String prefFromChargerType(String email, Float latitude, Float longitude){
         String result = "";
+        int length;
         User user = filterRepository.findOneByEmail(email);
         UserPreference userPreference = filterRepository.findOneByUserId(user.getId());
         Preference preference = filterRepository.findOneByPreferenceId(userPreference.getPreference_id().getId());
         List<ApiInformation> info = filterRepository.findByChargerType(latitude,longitude,preference.getChargerType());
-        for(int i = 0; i < info.size(); i++) {
-            if(i == info.size() -1) {
+        length = info.size();
+        for(int i = 0; i < length; i++) {
+            if(i == length -1) {
                 result += info.get(i).getStatId();
             }
             else{

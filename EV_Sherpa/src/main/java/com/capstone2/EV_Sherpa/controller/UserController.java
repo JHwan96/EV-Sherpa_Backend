@@ -1,14 +1,13 @@
 package com.capstone2.EV_Sherpa.controller;
 
-import com.capstone2.EV_Sherpa.domain.Preference;
-import com.capstone2.EV_Sherpa.domain.User;
+import com.capstone2.EV_Sherpa.domain.entity.User;
 import com.capstone2.EV_Sherpa.service.UserService;
 import com.capstone2.EV_Sherpa.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 

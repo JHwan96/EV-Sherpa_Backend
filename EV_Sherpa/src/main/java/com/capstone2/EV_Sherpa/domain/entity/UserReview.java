@@ -1,4 +1,4 @@
-package com.capstone2.EV_Sherpa.domain;
+package com.capstone2.EV_Sherpa.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;

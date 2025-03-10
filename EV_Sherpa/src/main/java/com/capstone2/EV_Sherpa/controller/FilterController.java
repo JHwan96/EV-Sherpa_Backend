@@ -1,6 +1,5 @@
 package com.capstone2.EV_Sherpa.controller;
 
-import com.capstone2.EV_Sherpa.domain.Preference;
 import com.capstone2.EV_Sherpa.service.FilterService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
